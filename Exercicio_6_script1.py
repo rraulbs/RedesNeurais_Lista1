@@ -10,12 +10,11 @@ Created on Mon Oct 19 19:23:52 2020
 #   ALUNO: RAUL BAPTISTA DE SOUZA
 #   DRE: 115 110 845
 #   Script1: Exercicio_6_sem_cross_validation (Exercicio_6_script1.py) 
-#       Esse primeiro script  dividi os dados em treino e teste (70%-30%)
+#       Esse primeiro script dividi os dados em treino e teste (70%-30%)
 #   Script2: Exercicio_6_com_cross_validation (Exercicio_6_script2.py)
 #       O segundo script efetua validação cruzada.
 #===============================================================================
 
-#%%
 #-------------------------------------------------------------------------------
 # Importar bibliotecas
 #-------------------------------------------------------------------------------
@@ -147,6 +146,53 @@ print('Matriz de confusão:')
 print(cm)
 print('Acurácia:')
 print(accuracy_score(y_teste, y_pred))
+def plot_confusion_matrix(y_true, y_pred, classes,
+                          normalize=False,
+                          title=None,
+                          cmap=plt.cm.Blues):
+    """
+    This function prints and plots the confusion matrix.
+    Normalization can be applied by setting `normalize=True`.
+    """
+    if not title:
+        title = 'Confusion matrix, without normalization'
+
+    # Compute confusion matrix
+    cm = confusion_matrix(y_true, y_pred)
+  
+
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
+    fig, ax = plt.subplots()
+    im = ax.imshow(cm, interpolation='nearest', cmap=cmap)
+    ax.figure.colorbar(im, ax=ax)
+    # We want to show all ticks...
+    ax.set(xticks=np.arange(cm.shape[1]),
+           yticks=np.arange(cm.shape[0]),
+           # ... and label them with the respective list entries
+           xticklabels=classes, yticklabels=classes,
+           title=title,
+           ylabel='True label',
+           xlabel='Predicted label')
+
+    # Rotate the tick labels and set their alignment.
+    plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
+             rotation_mode="anchor")
+
+    # Loop over data dimensions and create text annotations.
+    fmt = '.2f' if normalize else 'd'
+    thresh = cm.max() / 2.
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            ax.text(j, i, format(cm[i, j], fmt),
+                    ha="center", va="center",
+                    color="white" if cm[i, j] > thresh else "black")
+    fig.tight_layout()
+    return ax
+
+plot_confusion_matrix(y_teste, y_pred, classes=[1, 0], title='Confusion matrix')
+# plt.savefig("ConfusionMatrix.png")
 #-------------------------------------------------------------------------------
 # ROC curve
 #-------------------------------------------------------------------------------

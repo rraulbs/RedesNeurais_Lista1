@@ -42,8 +42,8 @@ np.random.seed(seed)
 #       Se ambos forem True, será selecionado parâmetros da questão 2.
 layer_sizes = [2,2,3,2]
 activation_functions = [0,4,3,1]
-model_question_1 = False
-model_question_2 = True
+model_question_1 = True
+model_question_2 = False
 #-------------------------------------------------------------------------------
 #%%
 input_layer = [layer_sizes[0]+1]
